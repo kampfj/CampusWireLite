@@ -15,7 +15,6 @@ mongoose.connect(MONGO_URI, {
   useUnifiedTopology: true
 })
 
-app.use(isAuthenticated)
 app.use(express.static('dist'))
 app.use(express.json())
 
@@ -28,11 +27,19 @@ app.use(
 )
 // home URL route 
 app.get('/', (req, res) => {
-  res.send('We are on home')
+  res.send(`hello ${req.session.username} welcome to home`)
+  console.log(req.session)
 })
 
 app.use('/account', AccountRouter)
 app.use('/api', ApiRouter)
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err)
+  }
+  res.status(500)
+  res.render('error', {error: err})
+})
 
 // listening on the server 
 app.listen(3000, () => {

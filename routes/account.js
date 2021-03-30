@@ -27,7 +27,7 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
   const { username, password } = req.body
   try {
     await User.findOne({ username, password }, (err, user) => {
@@ -35,18 +35,18 @@ router.post('/login', async (req, res) => {
         req.session.username = username
         req.session.password = password
         res.send('we logged you in')
-      } else {
-        res.send('you could not be logged in biggg sad :(')
+      } 
+      if (err) {
+        next(new Error('could not log you in'))
       }
     })
   } catch {
-    res.send('we had an error trying to create the user')
+    console.log('we had an error trying to create the user')
   }
-  res.send('hit login route')
 })
 
 router.post('/logout', isAuthenticated, (req, res) => {
-  res.session = {}
+  req.session = {}
   res.send('successfully logged out')
 })
 
