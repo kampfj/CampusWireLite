@@ -12,7 +12,7 @@ const ONE_DAY = 24 * 60 * 60 * 1000
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 
 app.use(express.static('dist'))
@@ -22,26 +22,21 @@ app.use(
   cookieSession({
     name: 'local-session',
     keys: ['spooky'],
-    maxAge: ONE_DAY, // 24 hours
-  })
+    maxAge: ONE_DAY,
+  }),
 )
-// home URL route 
+
 app.get('/', (req, res) => {
   res.send(`hello ${req.session.username} welcome to home`)
-  console.log(req.session)
 })
 
 app.use('/account', AccountRouter)
 app.use('/api', ApiRouter)
 app.use((err, req, res, next) => {
-  if (res.headersSent) {
-    return next(err)
-  }
   res.status(500)
-  res.render('error', {error: err})
+  res.json({ error: err })
 })
 
-// listening on the server 
 app.listen(3000, () => {
   console.log('listening on port 3000')
 })
