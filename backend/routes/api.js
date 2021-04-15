@@ -37,8 +37,7 @@ router.post('/questions/answer', isAuthenticated, async (req, res, next) => {
   try {
     await Question.findById(_id, async (err, question) => {
       if (question) {
-        question = { ...question, answer }
-        await question.save()
+        question.answer = answer
       } else {
         next('could not update question')
       }

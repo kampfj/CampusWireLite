@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const cookieSession = require('cookie-session')
+const path = require('path')
 
 const AccountRouter = require('./routes/account')
 const ApiRouter = require('./routes/api')
@@ -26,12 +27,30 @@ app.use(
   }),
 )
 
-app.get('/', (req, res) => {
-  res.send(`hello ${req.session.username} welcome to home`)
+app.get('/favicon.ico', (req, res) => {
+  res.status(404).send()
+})
+
+app.get('/logged_in', (req, res) => {
+  if (!req.session.username) {
+    res.send({
+      isLoggedIn: false,
+    })
+  } else {
+    res.send({
+      isLoggedIn: true,
+      username: req.session.username,
+    })
+  }
 })
 
 app.use('/account', AccountRouter)
 app.use('/api', ApiRouter)
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'))
+})
+
 app.use((err, req, res, next) => {
   res.status(500)
   res.json({ error: err })
