@@ -3,17 +3,19 @@ import { Container, Form, Button } from 'react-bootstrap'
 import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 
-const Login = ({ setIsLoggedIn, setUsername }) => {
+const Login = ({ isLoggedIn, setIsLoggedIn, setUsername }) => {
   const [currentUsername, setCurrentUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const submitHelper = async () => {
     const { data, status } = await axios.post('account/login', { username: currentUsername, password })
+    console.log(data)
     if (status !== 200 || data.includes('ERROR')) {
       window.alert(data)
+    } else {
+      setUsername(currentUsername)
+      setIsLoggedIn(true)
     }
-    setUsername(currentUsername)
-    setIsLoggedIn(true)
   }
 
   return (
@@ -33,11 +35,10 @@ const Login = ({ setIsLoggedIn, setUsername }) => {
             <Form.Label> Password </Form.Label>
             <Form.Control type="password" value={password} placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
           </Form.Group>
-          <Link to="/">
-            <Button size="sm" variant="outline-primary" onClick={submitHelper}>
-              Login
-            </Button>
-          </Link>
+          <Button size="sm" variant="outline-primary" onClick={submitHelper}>
+            Login
+          </Button>
+          { isLoggedIn && <Redirect to="/"> </Redirect> }
           <br />
           <br />
           Not signed up yet? &nbsp;

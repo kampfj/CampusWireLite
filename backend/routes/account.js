@@ -27,7 +27,7 @@ router.post('/login', async (req, res, next) => {
         req.session.password = password
         res.send('we logged you in')
       } else {
-        next('ERROR')
+        res.send('ERROR: we could not log you in')
       }
     })
   } catch (err) {

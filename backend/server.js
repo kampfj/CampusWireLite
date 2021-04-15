@@ -52,6 +52,7 @@ app.get('*', (req, res) => {
 })
 
 app.use((err, req, res, next) => {
+  console.log('hit the default error handlerrrr')
   res.status(500)
   res.json({ error: err })
 })

@@ -43,7 +43,7 @@ const App = () => {
             <Signup />
           </Route>
           <Route path="/login" exact>
-            <Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+            <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
           </Route>
         </Switch>
       </Router>
