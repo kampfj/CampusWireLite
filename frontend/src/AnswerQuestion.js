@@ -10,9 +10,11 @@ const AnswerQuestion = ({ questionText, answerQuestionMode, setAnswerQuestionMod
   }
 
   const answerQuestionHandler = async () => {
-    const result = await axios.post('api/questions/answer', { _id: id, answer })
+    const { data, status } = await axios.post('api/questions/answer', { _id: id, answer })
+    if (status !== 200 || data.includes('ERROR')) {
+      window.alert(data)
+    }
     setAnswerQuestionMode(false)
-    console.log('hi')
   }
 
   return (
@@ -30,8 +32,8 @@ const AnswerQuestion = ({ questionText, answerQuestionMode, setAnswerQuestionMod
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-secondary" onClick={cancelHandler}>Cancel</Button>
-        <Button variant="outline-primary" type="submit" onClick={answerQuestionHandler}>Answer</Button>
+        <Button size="sm" variant="outline-secondary" onClick={cancelHandler}>Cancel</Button>
+        <Button size="sm" variant="outline-primary" type="submit" onClick={answerQuestionHandler}>Answer</Button>
       </Modal.Footer>
     </Modal>
   )

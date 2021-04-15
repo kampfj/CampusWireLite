@@ -10,6 +10,7 @@
     "brace-style": [2, "1tbs"],
     "camelcase": 0,
     "no-bitwise": 2,
+    "no-alert": "off",
     "no-empty": 2,
     "no-ex-assign": 2,
     "no-lonely-if": 2,

@@ -8,11 +8,12 @@ const Login = ({ setIsLoggedIn, setUsername }) => {
   const [password, setPassword] = useState('')
 
   const submitHelper = async () => {
-    const result = await axios.post('account/login', { username: currentUsername, password })
+    const { data, status } = await axios.post('account/login', { username: currentUsername, password })
+    if (status !== 200 || data.includes('ERROR')) {
+      window.alert(data)
+    }
     setUsername(currentUsername)
     setIsLoggedIn(true)
-    console.log('hi there')
-    console.log(result)
   }
 
   return (
@@ -30,17 +31,18 @@ const Login = ({ setIsLoggedIn, setUsername }) => {
 
           <Form.Group controlId="formBasicPassword">
             <Form.Label> Password </Form.Label>
-            <Form.Control value={password} placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
+            <Form.Control type="password" value={password} placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
           </Form.Group>
           <Link to="/">
-            <Button variant="outline-primary" onClick={submitHelper}>
+            <Button size="sm" variant="outline-primary" onClick={submitHelper}>
               Login
             </Button>
           </Link>
           <br />
-          Not signed up yet?
+          <br />
+          Not signed up yet? &nbsp;
           <Link to="/signup">
-            <Button variant="outline-info"> Sign up now. </Button>
+            <Button size="sm" variant="outline-primary"> Sign up now. </Button>
           </Link>
         </Form>
       </Container>

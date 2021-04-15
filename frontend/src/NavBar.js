@@ -2,19 +2,32 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import { Button, Nav, Navbar } from 'react-bootstrap'
+import QuestionForm from './QuestionForm'
 
-const NavBar = ({ isLoggedIn, setIsLoggedIn, username, setUsername }) => {
+const NavBar = props => {
+  const { askQuestionMode, setAskQuestionMode, isLoggedIn, setIsLoggedIn, username,
+    setUsername } = props
+
+  const askQuestionHelper = () => {
+    setAskQuestionMode(true)
+  }
+
   const logoutHelper = async () => {
     const result = await axios.post('/account/logout', {})
     setIsLoggedIn(false)
     setUsername('')
-    console.log(result)
   }
 
   const renderLoggedOutNavRoutes = () => (
     <>
-      <Nav.Link as={Link} to="/signup"> Sign Up </Nav.Link>
-      <Nav.Link as={Link} to="/login"> Login </Nav.Link>
+      &nbsp;
+      <Nav.Link as={Link} to="/signup">
+        <Button size="sm" variant="outline-primary"> Sign Up </Button>
+      </Nav.Link>
+      &nbsp;
+      <Nav.Link as={Link} to="/login">
+        <Button size="sm" variant="outline-primary"> Login </Button>
+      </Nav.Link>
     </>
   )
 
@@ -24,14 +37,13 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn, username, setUsername }) => {
         Signed in as: &nbsp;
         {username}
       </Navbar.Text>
-      &nbsp;
+      &nbsp; &nbsp;
       <Link to="/">
-        <Button variant="outline-secondary" onClick={logoutHelper}> Logout </Button>
+        <Button size="sm" variant="outline-secondary" onClick={logoutHelper}> Logout </Button>
       </Link>
-      &nbsp;
-      <Link to={`/ask/${username}`}>
-        <Button variant="outline-secondary"> Ask a question </Button>
-      </Link>
+      &nbsp; &nbsp;
+      <Button size="sm" variant="outline-secondary" onClick={askQuestionHelper}> Ask a question </Button>
+      { askQuestionMode && <QuestionForm askQuestionMode={askQuestionMode} setAskQuestionMode={setAskQuestionMode} user={username} />}
     </>
   )
 

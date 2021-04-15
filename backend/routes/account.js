@@ -14,7 +14,7 @@ router.post('/signup', async (req, res) => {
     await User.create({ username, password })
     res.send('successfully created a new user')
   } catch (err) {
-    res.send(`caught error: ${err}`)
+    res.send(`ERROR: ${err}`)
   }
 })
 
@@ -27,11 +27,11 @@ router.post('/login', async (req, res, next) => {
         req.session.password = password
         res.send('we logged you in')
       } else {
-        next('could not log you in')
+        next('ERROR')
       }
     })
   } catch (err) {
-    res.send(`caught error: ${err}`)
+    res.send(`ERROR: ${err}`)
   }
 })
 

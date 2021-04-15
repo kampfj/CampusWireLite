@@ -5,10 +5,10 @@ import Signup from './Signup'
 import Login from './Login'
 import NavBar from './NavBar'
 import Homepage from './Homepage'
-import QuestionForm from './QuestionForm'
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [askQuestionMode, setAskQuestionMode] = useState(false)
   const [username, setUsername] = useState('')
 
   const fetchLoggedIn = async () => {
@@ -27,11 +27,14 @@ const App = () => {
     <>
       <Router>
         <NavBar
+          askQuestionMode={askQuestionMode}
+          setAskQuestionMode={setAskQuestionMode}
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
           username={username}
           setUsername={setUsername}
         />
+        <br />
         <Switch>
           <Route path="/" exact>
             <Homepage isLoggedIn={isLoggedIn} username={username} />
@@ -41,9 +44,6 @@ const App = () => {
           </Route>
           <Route path="/login" exact>
             <Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
-          </Route>
-          <Route path="/ask/:user" exact>
-            <QuestionForm />
           </Route>
         </Switch>
       </Router>
